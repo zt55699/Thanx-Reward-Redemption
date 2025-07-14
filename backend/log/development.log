@@ -1,0 +1,2263 @@
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-07-14 06:26:49.126834', '2025-07-14 06:26:49.126836') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (1)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "name" varchar NOT NULL, "password_digest" varchar NOT NULL, "admin" boolean DEFAULT 0 NOT NULL, "points_balance" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('1') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Migrating to CreateRewards (2)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "rewards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "description" text NOT NULL, "cost" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_rewards_on_name" ON "rewards" ("name")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('2') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Migrating to CreateRedemptions (3)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "redemptions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "reward_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_14fa576d5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_f8409c3b59"
+FOREIGN KEY ("reward_id")
+  REFERENCES "rewards" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_user_id" ON "redemptions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_reward_id" ON "redemptions" ("reward_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_user_id_and_created_at" ON "redemptions" ("user_id", "created_at")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('3') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions"[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "name", "password_digest", "admin", "points_balance", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "admin@thanx.com"], ["name", "Admin User"], ["password_digest", "$2a$12$Pn5pCyklbeD8hWc1gD98fuu7QUUBJ59piG70tqq.OfGORdicETQMi"], ["admin", 1], ["points_balance", 0], ["created_at", "2025-07-14 06:32:12.926426"], ["updated_at", "2025-07-14 06:32:12.926426"]]
+  [1m[36mTRANSACTION (5.2ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "name", "password_digest", "admin", "points_balance", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "tong@gmail.com"], ["name", "Tong User"], ["password_digest", "$2a$12$iUT53gca5pXKn05xUCxBx.bIunQel/EuqwbQfTQ2gb8NMEAuX/UZm"], ["admin", 0], ["points_balance", 10000], ["created_at", "2025-07-14 06:32:13.067029"], ["updated_at", "2025-07-14 06:32:13.067029"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.6ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Starbucks Gift Card"], ["description", "$10 Starbucks gift card to enjoy your favorite coffee"], ["cost", 500], ["created_at", "2025-07-14 06:32:13.070107"], ["updated_at", "2025-07-14 06:32:13.070107"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.6ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Walmart Gift Card"], ["description", "$25 Walmart gift card for your shopping needs"], ["cost", 1000], ["created_at", "2025-07-14 06:32:13.071905"], ["updated_at", "2025-07-14 06:32:13.071905"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.7ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "iPhone 17 Pro"], ["description", "Latest iPhone 17 Pro with 256GB storage"], ["cost", 50000], ["created_at", "2025-07-14 06:32:13.073812"], ["updated_at", "2025-07-14 06:32:13.073812"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mReward Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "rewards"[0m
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-13 23:46:23 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "admin@thanx.com", "password" => "admin123", "auth" => {"email" => "admin@thanx.com", "password" => "admin123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 164ms (Views: 0.2ms | ActiveRecord: 2.6ms (1 query, 0 cached) | GC: 9.3ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:46:23 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:46:23 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:46:36 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:46:36 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:46:38 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:46:39 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:46:41 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:46:43 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-13 23:48:14 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 131ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:48:14 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:48:14 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:48:19 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:48:19 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:26 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:27 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:29 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:33 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:48:42 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:42 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:48:42 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:43 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:45 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/redemptions" for 127.0.0.1 at 2025-07-13 23:48:49 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/user/redemptions"):
+  
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:51:39 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:51:40 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:51:40 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:51:50 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:51:50 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:52:04 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:52:12 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:52:12 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:52:12 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:52:20 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:52:20 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:52:40 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:52:45 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:52:45 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-13 23:53:22 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 129ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:53:22 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:22 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:26 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:26 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-13 23:53:28 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:34 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:34 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:35 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:37 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:37 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:38 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:40 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:40 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-13 23:53:41 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:42 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:42 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:43 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-13 23:53:45 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-13 23:53:45 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-13 23:53:48 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:57:24 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-13 23:57:24 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-13 23:57:24 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:00:14 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:00:14 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:00:14 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:00:52 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:01:10 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:01:15 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:01:58 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:01:59 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:01:59 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:02:01 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:02 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:02:05 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:05 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:02:06 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:07 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:02:07 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:08 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:02:09 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:09 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:02:10 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:02:11 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:11 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:02:12 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:03:01 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:03:25 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:03:58 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:03:58 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:06:30 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:06:30 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:06:30 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:06:41 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:06:49 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:07:06 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:07:43 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:07:51 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:07:59 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:07:59 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:09:59 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 132ms (Views: 0.3ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:10:00 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:10:00 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:10:03 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:10:03 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:10:06 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:10:07 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:10:09 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:10:13 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:11:54 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:11:59 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:11:59 -0700
+Processing by RewardsController#index as HTML
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mReward Load (0.3ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:12:04 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:12:06 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:12:08 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.1ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:12:12 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/controllers/application_controller.rb:44:in 'Class#new'
+app/controllers/application_controller.rb:44:in 'ApplicationController#render_serialized'
+app/controllers/redemptions_controller.rb:9:in 'RedemptionsController#index'
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:26 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:13:27 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:28 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:13:28 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 2.8ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:13:35 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.2ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 0.6ms (2 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:13:54 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:54 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:55 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:13:58 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:13:58 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:13:59 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:14:00 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:14:00 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:14:00 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:14:02 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:14:02 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:14:53 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.1ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 9000], ["updated_at", "2025-07-14 07:14:53.274555"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.2ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:14:53.284979"], ["updated_at", "2025-07-14 07:14:53.284979"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 23ms (Views: 0.1ms | ActiveRecord: 5.8ms (7 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:14:53 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:01 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ?[0m  [["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:15:07 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:07 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:09 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 8000], ["updated_at", "2025-07-14 07:15:09.697818"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:09.698760"], ["updated_at", "2025-07-14 07:15:09.698760"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 5ms (Views: 0.1ms | ActiveRecord: 0.8ms (7 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:09 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:11 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 7000], ["updated_at", "2025-07-14 07:15:11.555447"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:11.556367"], ["updated_at", "2025-07-14 07:15:11.556367"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 5ms (Views: 0.1ms | ActiveRecord: 0.8ms (7 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:11 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:13 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 6000], ["updated_at", "2025-07-14 07:15:13.275084"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:13.276014"], ["updated_at", "2025-07-14 07:15:13.276014"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 6ms (Views: 0.1ms | ActiveRecord: 0.9ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:13 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:15 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 5000], ["updated_at", "2025-07-14 07:15:15.011943"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:15.012963"], ["updated_at", "2025-07-14 07:15:15.012963"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 6ms (Views: 0.2ms | ActiveRecord: 0.8ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:15 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:16 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 4000], ["updated_at", "2025-07-14 07:15:16.519416"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:16.520259"], ["updated_at", "2025-07-14 07:15:16.520259"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 5ms (Views: 0.1ms | ActiveRecord: 0.7ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:16 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:18 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 3000], ["updated_at", "2025-07-14 07:15:18.246866"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:18.247762"], ["updated_at", "2025-07-14 07:15:18.247762"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 8ms (Views: 0.1ms | ActiveRecord: 3.3ms (7 queries, 0 cached) | GC: 2.3ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:18 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:19 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 2000], ["updated_at", "2025-07-14 07:15:19.699795"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:19.700780"], ["updated_at", "2025-07-14 07:15:19.700780"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 6ms (Views: 0.1ms | ActiveRecord: 0.7ms (7 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:19 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:21 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "2", "redemption" => {"reward_id" => "2"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 1000], ["updated_at", "2025-07-14 07:15:21.173334"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 2], ["created_at", "2025-07-14 07:15:21.174233"], ["updated_at", "2025-07-14 07:15:21.174233"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 6ms (Views: 0.1ms | ActiveRecord: 1.0ms (7 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:21 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:26 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "1", "redemption" => {"reward_id" => "1"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 500], ["updated_at", "2025-07-14 07:15:26.037426"], ["id", 2]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 2], ["reward_id", 1], ["created_at", "2025-07-14 07:15:26.038383"], ["updated_at", "2025-07-14 07:15:26.038383"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 6ms (Views: 0.1ms | ActiveRecord: 0.9ms (7 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:26 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:29 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:15:32 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:32 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:34 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:15:45 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:45 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:45 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:15:48 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:48 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:15:49 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 2.5ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:15:50 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:50 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.1ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:15:51 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:17:06 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:17:08 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:17:08 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:17:08 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:19:44 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "admin@thanx.com", "password" => "admin123", "auth" => {"email" => "admin@thanx.com", "password" => "admin123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 130ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:19:44 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:19:44 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:19:58 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:19:58 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:19:58 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 1.0ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.4ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:20:07 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:20:07 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:20:07 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.8ms)
+
+
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:21:42 -0700
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:21:42 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:21:51 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:21:52 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:21:54 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:21:55 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:21:56 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:21:57 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:21:58 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:22:00 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:22:01 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:22:02 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.2ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=1" for 127.0.0.1 at 2025-07-14 00:22:02 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:22:03 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:26:41 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 130ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:26:41 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:26:41 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:26:44 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:26:44 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:26:47 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:26:51 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:26:51 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:26:51 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:27:02 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "admin@thanx.com", "password" => "admin123", "auth" => {"email" => "admin@thanx.com", "password" => "admin123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 125ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:27:02 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:27:02 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=2" for 127.0.0.1 at 2025-07-14 00:27:05 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "2"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 1], ["id", 2]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:27:14 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:27:14 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mRedemption Load (0.3ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.8ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 2]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (1.3ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 3]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 4]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 5]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.5ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 6]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 7]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 8]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.4ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 9]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Destroy (0.5ms)[0m  [1m[31mDELETE FROM "redemptions" WHERE "redemptions"."id" = ?[0m  [["id", 10]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Load (0.6ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ?[0m  [["user_id", 1]]
+  [1m[36mUser Destroy (0.0ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Load (0.6ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ?[0m  [["user_id", 2]]
+  [1m[36mUser Destroy (0.1ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 2]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "redemptions" WHERE "redemptions"."reward_id" = ? LIMIT ?[0m  [["reward_id", 1], ["LIMIT", 1]]
+  [1m[36mReward Destroy (0.0ms)[0m  [1m[31mDELETE FROM "rewards" WHERE "rewards"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "redemptions" WHERE "redemptions"."reward_id" = ? LIMIT ?[0m  [["reward_id", 2], ["LIMIT", 1]]
+  [1m[36mReward Destroy (0.0ms)[0m  [1m[31mDELETE FROM "rewards" WHERE "rewards"."id" = ?[0m  [["id", 2]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "redemptions" WHERE "redemptions"."reward_id" = ? LIMIT ?[0m  [["reward_id", 3], ["LIMIT", 1]]
+  [1m[36mReward Destroy (0.0ms)[0m  [1m[31mDELETE FROM "rewards" WHERE "rewards"."id" = ?[0m  [["id", 3]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "name", "password_digest", "admin", "points_balance", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "admin@thanx.com"], ["name", "Admin"], ["password_digest", "$2a$12$mwkADQGvJPThhiJgK4l41Ok4He.FmgPHBoYHwhEbfenS36eTAc3Au"], ["admin", 1], ["points_balance", 0], ["created_at", "2025-07-14 07:30:09.365897"], ["updated_at", "2025-07-14 07:30:09.365897"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "name", "password_digest", "admin", "points_balance", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "tong@gmail.com"], ["name", "Tong"], ["password_digest", "$2a$12$JBMsZBrR01u5byN4QSXZjeyv4UFT9IalVOQ202tW8PYUq2Y156Aqi"], ["admin", 0], ["points_balance", 10000], ["created_at", "2025-07-14 07:30:09.497602"], ["updated_at", "2025-07-14 07:30:09.497602"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.7ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Starbucks Gift Card"], ["description", "$10 Starbucks gift card to enjoy your favorite coffee"], ["cost", 500], ["created_at", "2025-07-14 07:30:09.499221"], ["updated_at", "2025-07-14 07:30:09.499221"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.6ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Walmart Gift Card"], ["description", "$25 Walmart gift card for your shopping needs"], ["cost", 1000], ["created_at", "2025-07-14 07:30:09.501051"], ["updated_at", "2025-07-14 07:30:09.501051"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mReward Create (0.6ms)[0m  [1m[32mINSERT INTO "rewards" ("name", "description", "cost", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "iPhone 17 Pro"], ["description", "Latest iPhone 17 Pro with 256GB storage"], ["cost", 50000], ["created_at", "2025-07-14 07:30:09.502797"], ["updated_at", "2025-07-14 07:30:09.502797"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mReward Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "rewards"[0m
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:30:28 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "admin@thanx.com", "password" => "admin123", "auth" => {"email" => "admin@thanx.com", "password" => "admin123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 131ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:30:28 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:30:28 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=4" for 127.0.0.1 at 2025-07-14 00:30:45 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "4"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 4]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=3" for 127.0.0.1 at 2025-07-14 00:30:45 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "3"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 3]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=4" for 127.0.0.1 at 2025-07-14 00:30:46 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "4"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 4]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:31:00 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 128ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:31:01 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:31:01 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:31:07 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:31:07 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:31:09 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.1ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 4]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:31:11 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:31:11 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:31:13 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "5", "redemption" => {"reward_id" => "5"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 4], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.1ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 9000], ["updated_at", "2025-07-14 07:31:13.861969"], ["id", 4]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 4], ["reward_id", 5], ["created_at", "2025-07-14 07:31:13.866509"], ["updated_at", "2025-07-14 07:31:13.866509"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 1.2ms (7 queries, 0 cached) | GC: 3.2ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:31:13 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/redemptions" for 127.0.0.1 at 2025-07-14 00:31:17 -0700
+Processing by RedemptionsController#create as HTML
+  Parameters: {"reward_id" => "4", "redemption" => {"reward_id" => "4"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/services/rewards/redeemer.rb:14:in 'block in Rewards::Redeemer#call'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ? [0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/models/user.rb:19:in 'User#deduct_points!'
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER(?) AND "users"."id" != ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["id", 4], ["LIMIT", 1]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mUser Update (0.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 8500], ["updated_at", "2025-07-14 07:31:17.978357"], ["id", 4]]
+  ↳ app/models/user.rb:21:in 'block in User#deduct_points!'
+  [1m[36mRedemption Create (0.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 4], ["reward_id", 4], ["created_at", "2025-07-14 07:31:17.979224"], ["updated_at", "2025-07-14 07:31:17.979224"]]
+  ↳ app/services/rewards/redeemer.rb:23:in 'block in Rewards::Redeemer#call'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  ↳ app/services/rewards/redeemer.rb:13:in 'Rewards::Redeemer#call'
+Completed 201 Created in 7ms (Views: 0.1ms | ActiveRecord: 0.9ms (7 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:31:17 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:32:13 -0700
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:32:13 -0700
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:32:13 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:32:54 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:33:36 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 127ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:33:36 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:33:36 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rewards" for 127.0.0.1 at 2025-07-14 00:34:05 -0700
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:34:05 -0700
+Processing by RewardsController#index as HTML
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards"[0m
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions" for 127.0.0.1 at 2025-07-14 00:34:33 -0700
+Processing by RedemptionsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 4]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 4], ["id", 5]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:35:05 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "admin@thanx.com", "password" => "admin123", "auth" => {"email" => "admin@thanx.com", "password" => "admin123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "admin@thanx.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 129ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:35:05 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-07-14 00:35:05 -0700
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in 'Enumerable#map'
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/redemptions?user_id=4" for 127.0.0.1 at 2025-07-14 00:35:08 -0700
+Processing by RedemptionsController#index as HTML
+  Parameters: {"user_id" => "4"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+  [1m[36mRedemption Load (0.0ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."created_at" DESC[0m  [["user_id", 4]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" IN (?, ?)[0m  [["id", 4], ["id", 5]]
+  ↳ app/controllers/application_controller.rb:46:in 'ApplicationController#render_serialized'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.6ms)
+
+
+Started POST "/auth/login" for 127.0.0.1 at 2025-07-14 00:38:29 -0700
+Processing by AuthController#login as HTML
+  Parameters: {"email" => "tong@gmail.com", "password" => "user123", "auth" => {"email" => "tong@gmail.com", "password" => "user123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "tong@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/auth_controller.rb:3:in 'AuthController#login'
+Completed 200 OK in 131ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:38:29 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:38:29 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:42:31 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 2ms (Views: 0.3ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:54:06 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user/balances" for 127.0.0.1 at 2025-07-14 00:54:06 -0700
+Processing by UsersController#balances as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user" for 127.0.0.1 at 2025-07-14 00:54:06 -0700
+Processing by UsersController#show as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:17:in 'ApplicationController#authenticate_user!'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
